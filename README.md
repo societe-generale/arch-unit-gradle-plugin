@@ -1,5 +1,7 @@
 # ArchUnit Gradle plugin
 
+[![Build Status](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin)
+
 A gradle wrapper around ArchUnit, to easily share and enforce architecture rules across projects. This plugin is under construction and the java tests are still missing!
 
 The option to use configurable rules has been added but has not been tested yet!
