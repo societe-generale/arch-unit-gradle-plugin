@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ArchUnitGradleConfig {
 
-    NamedDomainObjectContainer<ContainerPreConfiguredRules> ContainerPreConfiguredRules;
-    NamedDomainObjectContainer<ContainerConfigurableRules> ContainerConfigurableRules;
+    private final NamedDomainObjectContainer<ContainerPreConfiguredRules> containerPreConfiguredRules;
+    private final NamedDomainObjectContainer<ContainerConfigurableRules> containerConfigurableRules;
 
     private Project project;
 
@@ -21,19 +21,18 @@ public class ArchUnitGradleConfig {
 
     private boolean skip = false;
 
-    public ArchUnitGradleConfig(Project project,NamedDomainObjectContainer ArchUnitGradleExtensionPreConfiguredRules,NamedDomainObjectContainer ArchUnitGradleExtensionConfigurableRules) {
-        this.ContainerPreConfiguredRules =ArchUnitGradleExtensionPreConfiguredRules;
-        this.ContainerConfigurableRules =ArchUnitGradleExtensionConfigurableRules;
+    public ArchUnitGradleConfig(Project project,NamedDomainObjectContainer<ContainerPreConfiguredRules> archUnitGradleExtensionPreConfiguredRules,NamedDomainObjectContainer<ContainerConfigurableRules> archUnitGradleExtensionConfigurableRules) {
+        this.containerPreConfiguredRules =archUnitGradleExtensionPreConfiguredRules;
+        this.containerConfigurableRules =archUnitGradleExtensionConfigurableRules;
         this.project = project;
     }
 
     public void configureArchUnitGradleExtensionPreConfiguredRules(Closure closure){
-        ContainerPreConfiguredRules.configure(closure);
-        //System.out.println(ContainerPreConfiguredRules.getByName("Rule1").getName()+" HALLO");
+        containerPreConfiguredRules.configure(closure);
     }
 
     public void configureArchUnitGradleExtensionConfigurableRules(Closure closure){
-        ContainerConfigurableRules.configure(closure);
+        containerConfigurableRules.configure(closure);
     }
 
     public void setPreConfiguredRules(List<String> preConfiguredRules) {
@@ -46,8 +45,8 @@ public class ArchUnitGradleConfig {
 
     public void updatePreConfiguredRules(){
         List<String> preConfiguredRules= new ArrayList<>();
-        for (int i = 0; i< ContainerPreConfiguredRules.size(); i++){
-            Object[] preConfiguredRulesArray = ContainerPreConfiguredRules.toArray();
+        for (int i = 0; i< containerPreConfiguredRules.size(); i++){
+            Object[] preConfiguredRulesArray = containerPreConfiguredRules.toArray();
             ContainerPreConfiguredRules containerPreConfiguredRules =(ContainerPreConfiguredRules) preConfiguredRulesArray[i];
             preConfiguredRules.add(containerPreConfiguredRules.getRule());
         }
@@ -57,8 +56,8 @@ public class ArchUnitGradleConfig {
 
     public void updateConfigurableRules(){
         List<ConfigurableRule> configurableRules = new ArrayList<>();
-        for(int i = 0; i< ContainerConfigurableRules.size(); i++){
-            Object[] configurableRulesArray = ContainerConfigurableRules.toArray();
+        for(int i = 0; i< containerConfigurableRules.size(); i++){
+            Object[] configurableRulesArray = containerConfigurableRules.toArray();
             ContainerConfigurableRules containerConfigurableRules =(ContainerConfigurableRules) configurableRulesArray[i];
 
             ConfigurableRule configurableRule= new ConfigurableRule();
