@@ -1,11 +1,14 @@
 package com.societegenerale.commons.plugin.gradle;
 
+import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import groovy.lang.Closure;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,8 @@ public class ArchUnitGradleConfig {
 
     private final NamedDomainObjectContainer<ContainerPreConfiguredRules> containerPreConfiguredRules;
     private final NamedDomainObjectContainer<ContainerConfigurableRules> containerConfigurableRules;
+
+    private Logger log = LoggerFactory.getLogger(ArchUnitGradleConfig.class);
 
     private Project project;
 
@@ -51,7 +56,7 @@ public class ArchUnitGradleConfig {
             preConfiguredRules.add(containerPreConfiguredRules.getRule());
         }
         this.setPreConfiguredRules(preConfiguredRules);
-        System.out.println(preConfiguredRules.size()+" pre configured rules have been set!");
+        log.info(preConfiguredRules.size()+" pre configured rules have been set!");
     }
 
     public void updateConfigurableRules(){
@@ -71,7 +76,7 @@ public class ArchUnitGradleConfig {
             configurableRules.add(configurableRule);
         }
         this.setConfigurableRules(configurableRules);
-        System.out.println(configurableRules.size()+" configurable rules have been set!");
+        log.info(configurableRules.size()+" configurable rules have been set!");
     }
 
     public Rules getRules() {
