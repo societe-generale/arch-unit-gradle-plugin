@@ -43,9 +43,9 @@ public class ArchUnitGradleConfig {
 
     private  List<String> preconfiguredRules(){
 
-        List<String> preConfiguredRules = containerPreConfiguredRules.stream().map(r -> r.getRule()).collect(Collectors.toList());
+        List<String> preConfiguredRules = containerPreConfiguredRules.stream().map(ContainerPreConfiguredRules::getRule).collect(Collectors.toList());
 
-        log.info("extracting "+preConfiguredRules.size()+" pre configured rules from config");
+        log.info("extracting {} pre-configured rules from config",preConfiguredRules.size());
 
         return preconfiguredRules();
     }
@@ -58,7 +58,7 @@ public class ArchUnitGradleConfig {
                                                                                                                     false))
                                                                             .collect(Collectors.toList());
 
-        log.info("extracting "+configurableRules.size()+" configurable rules from config");
+        log.info("extracting {} configurable rules from config",configurableRules.size());
 
         return configurableRules;
     }
