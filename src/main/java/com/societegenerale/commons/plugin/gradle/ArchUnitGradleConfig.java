@@ -1,6 +1,5 @@
 package com.societegenerale.commons.plugin.gradle;
 
-import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
@@ -10,8 +9,8 @@ import org.gradle.api.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArchUnitGradleConfig {
 
@@ -21,8 +20,6 @@ public class ArchUnitGradleConfig {
     private Logger log = LoggerFactory.getLogger(ArchUnitGradleConfig.class);
 
     private Project project;
-
-    private Rules rules = new Rules();
 
     private boolean skip = false;
 
@@ -40,47 +37,35 @@ public class ArchUnitGradleConfig {
         containerConfigurableRules.configure(closure);
     }
 
-    public void setPreConfiguredRules(List<String> preConfiguredRules) {
-        this.rules.setPreConfiguredRules(preConfiguredRules);
-    }
-
     public void setSkip(boolean skip) {
         this.skip = skip;
     }
 
-    public void updatePreConfiguredRules(){
-        List<String> preConfiguredRules= new ArrayList<>();
-        for (int i = 0; i< containerPreConfiguredRules.size(); i++){
-            Object[] preConfiguredRulesArray = containerPreConfiguredRules.toArray();
-            ContainerPreConfiguredRules containerPreConfiguredRules =(ContainerPreConfiguredRules) preConfiguredRulesArray[i];
-            preConfiguredRules.add(containerPreConfiguredRules.getRule());
-        }
-        this.setPreConfiguredRules(preConfiguredRules);
-        log.info(preConfiguredRules.size()+" pre configured rules have been set!");
+    private  List<String> preconfiguredRules(){
+
+        List<String> preConfiguredRules = containerPreConfiguredRules.stream().map(r -> r.getRule()).collect(Collectors.toList());
+
+        log.info("extracting "+preConfiguredRules.size()+" pre configured rules from config");
+
+        return preconfiguredRules();
     }
 
-    public void updateConfigurableRules(){
-        List<ConfigurableRule> configurableRules = new ArrayList<>();
-        for(int i = 0; i< containerConfigurableRules.size(); i++){
-            Object[] configurableRulesArray = containerConfigurableRules.toArray();
-            ContainerConfigurableRules containerConfigurableRules =(ContainerConfigurableRules) configurableRulesArray[i];
+    private List<ConfigurableRule> configurableRules(){
 
-            ConfigurableRule configurableRule= new ConfigurableRule();
-            ApplyOn applyOn= new ApplyOn();
-            applyOn.setPackageName(containerConfigurableRules.getApplyOnPackageName());
-            applyOn.setScope(containerConfigurableRules.getApplyOnScope());
+        List<ConfigurableRule> configurableRules =containerConfigurableRules.stream().map(r -> new ConfigurableRule(r.getRule(),
+                                                                                                                    new ApplyOn(r.getApplyOnPackageName(),r.getApplyOnScope()),
+                                                                                                                    r.getCheck(),
+                                                                                                                    false))
+                                                                            .collect(Collectors.toList());
 
-            configurableRule.setRule(containerConfigurableRules.getRule());
-            configurableRule.setChecks(containerConfigurableRules.getCheck());
-            configurableRule.setApplyOn(applyOn);
-            configurableRules.add(configurableRule);
-        }
-        this.setConfigurableRules(configurableRules);
-        log.info(configurableRules.size()+" configurable rules have been set!");
+        log.info("extracting "+configurableRules.size()+" configurable rules from config");
+
+        return configurableRules;
     }
 
     public Rules getRules() {
-        return rules;
+
+        return new Rules(preconfiguredRules(),configurableRules());
     }
   
     public boolean isSkip() {
@@ -89,18 +74,6 @@ public class ArchUnitGradleConfig {
 
     public String getProjectPath() {
         return project.getProjectDir().toString();
-    }
-
-    public List getPreConfiguredRules() {
-        return this.rules.getPreConfiguredRules();
-    }
-
-    public List getConfigurableRules() {
-        return this.rules.getConfigurableRules();
-    }
-
-    public void setConfigurableRules(List<ConfigurableRule> configurableRules){
-        this.rules.setConfigurableRules(configurableRules);
     }
 
 }
