@@ -1,6 +1,7 @@
 package com.societegenerale.commons.plugin.gradle;
 
 import com.societegenerale.commons.plugin.Log;
+import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
@@ -26,15 +27,14 @@ public class ArchUnitRulesTask extends DefaultTask {
     @TaskAction
     public void checkRules() {
 
-        archUnitGradleConfig.updateConfigurableRules();
-        archUnitGradleConfig.updatePreConfiguredRules();
-
         if (archUnitGradleConfig.isSkip()) {
             logger.warn("Rule checking has been skipped!");
             return;
         }
 
-        if (!archUnitGradleConfig.getRules().isValid()) {
+        Rules rules = archUnitGradleConfig.getRules();
+
+        if (!rules.isValid()) {
             throw new GradleException("Arch unit Gradle Plugin should have at least one preconfigured/configurable rule!");
         }
 
@@ -42,7 +42,7 @@ public class ArchUnitRulesTask extends DefaultTask {
 
         RuleInvokerService ruleInvokerService = new RuleInvokerService(logger);
       
-        ruleFailureMessage = ruleInvokerService.invokeRules(archUnitGradleConfig.getRules(), archUnitGradleConfig.getProjectPath());
+        ruleFailureMessage = ruleInvokerService.invokeRules(rules, archUnitGradleConfig.getProjectPath());
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
             throw new GradleException(PREFIX_ARCH_VIOLATION_MESSAGE + " \n" + ruleFailureMessage);

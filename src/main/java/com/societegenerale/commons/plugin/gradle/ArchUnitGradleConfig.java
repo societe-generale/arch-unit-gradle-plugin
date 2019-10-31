@@ -6,77 +6,66 @@ import com.societegenerale.commons.plugin.model.Rules;
 import groovy.lang.Closure;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArchUnitGradleConfig {
 
-    NamedDomainObjectContainer<ContainerPreConfiguredRules> ContainerPreConfiguredRules;
-    NamedDomainObjectContainer<ContainerConfigurableRules> ContainerConfigurableRules;
+    private final NamedDomainObjectContainer<ContainerPreConfiguredRules> containerPreConfiguredRules;
+    private final NamedDomainObjectContainer<ContainerConfigurableRules> containerConfigurableRules;
+
+    private Logger log = LoggerFactory.getLogger(ArchUnitGradleConfig.class);
 
     private Project project;
 
-    private Rules rules = new Rules();
-
     private boolean skip = false;
 
-    public ArchUnitGradleConfig(Project project,NamedDomainObjectContainer ArchUnitGradleExtensionPreConfiguredRules,NamedDomainObjectContainer ArchUnitGradleExtensionConfigurableRules) {
-        this.ContainerPreConfiguredRules =ArchUnitGradleExtensionPreConfiguredRules;
-        this.ContainerConfigurableRules =ArchUnitGradleExtensionConfigurableRules;
+    public ArchUnitGradleConfig(Project project,NamedDomainObjectContainer<ContainerPreConfiguredRules> archUnitGradleExtensionPreConfiguredRules,NamedDomainObjectContainer<ContainerConfigurableRules> archUnitGradleExtensionConfigurableRules) {
+        this.containerPreConfiguredRules =archUnitGradleExtensionPreConfiguredRules;
+        this.containerConfigurableRules =archUnitGradleExtensionConfigurableRules;
         this.project = project;
     }
 
     public void configureArchUnitGradleExtensionPreConfiguredRules(Closure closure){
-        ContainerPreConfiguredRules.configure(closure);
-        //System.out.println(ContainerPreConfiguredRules.getByName("Rule1").getName()+" HALLO");
+        containerPreConfiguredRules.configure(closure);
     }
 
     public void configureArchUnitGradleExtensionConfigurableRules(Closure closure){
-        ContainerConfigurableRules.configure(closure);
-    }
-
-    public void setPreConfiguredRules(List<String> preConfiguredRules) {
-        this.rules.setPreConfiguredRules(preConfiguredRules);
+        containerConfigurableRules.configure(closure);
     }
 
     public void setSkip(boolean skip) {
         this.skip = skip;
     }
 
-    public void updatePreConfiguredRules(){
-        List<String> preConfiguredRules= new ArrayList<>();
-        for (int i = 0; i< ContainerPreConfiguredRules.size(); i++){
-            Object[] preConfiguredRulesArray = ContainerPreConfiguredRules.toArray();
-            ContainerPreConfiguredRules containerPreConfiguredRules =(ContainerPreConfiguredRules) preConfiguredRulesArray[i];
-            preConfiguredRules.add(containerPreConfiguredRules.getRule());
-        }
-        this.setPreConfiguredRules(preConfiguredRules);
-        System.out.println(preConfiguredRules.size()+" pre configured rules have been set!");
+    private  List<String> preconfiguredRules(){
+
+        List<String> preConfiguredRules = containerPreConfiguredRules.stream().map(ContainerPreConfiguredRules::getRule).collect(Collectors.toList());
+
+        log.info("extracting {} pre-configured rules from config",preConfiguredRules.size());
+
+        return preconfiguredRules();
     }
 
-    public void updateConfigurableRules(){
-        List<ConfigurableRule> configurableRules = new ArrayList<>();
-        for(int i = 0; i< ContainerConfigurableRules.size(); i++){
-            Object[] configurableRulesArray = ContainerConfigurableRules.toArray();
-            ContainerConfigurableRules containerConfigurableRules =(ContainerConfigurableRules) configurableRulesArray[i];
+    private List<ConfigurableRule> configurableRules(){
 
-            ConfigurableRule configurableRule= new ConfigurableRule();
-            ApplyOn applyOn= new ApplyOn();
-            applyOn.setPackageName(containerConfigurableRules.getApplyOnPackageName());
-            applyOn.setScope(containerConfigurableRules.getApplyOnScope());
+        List<ConfigurableRule> configurableRules =containerConfigurableRules.stream().map(r -> new ConfigurableRule(r.getRule(),
+                                                                                                                    new ApplyOn(r.getApplyOnPackageName(),r.getApplyOnScope()),
+                                                                                                                    r.getCheck(),
+                                                                                                                    false))
+                                                                            .collect(Collectors.toList());
 
-            configurableRule.setRule(containerConfigurableRules.getRule());
-            configurableRule.setChecks(containerConfigurableRules.getCheck());
-            configurableRule.setApplyOn(applyOn);
-            configurableRules.add(configurableRule);
-        }
-        this.setConfigurableRules(configurableRules);
-        System.out.println(configurableRules.size()+" configurable rules have been set!");
+        log.info("extracting {} configurable rules from config",configurableRules.size());
+
+        return configurableRules;
     }
 
     public Rules getRules() {
-        return rules;
+
+        return new Rules(preconfiguredRules(),configurableRules());
     }
   
     public boolean isSkip() {
@@ -85,18 +74,6 @@ public class ArchUnitGradleConfig {
 
     public String getProjectPath() {
         return project.getProjectDir().toString();
-    }
-
-    public List getPreConfiguredRules() {
-        return this.rules.getPreConfiguredRules();
-    }
-
-    public List getConfigurableRules() {
-        return this.rules.getConfigurableRules();
-    }
-
-    public void setConfigurableRules(List<ConfigurableRule> configurableRules){
-        this.rules.setConfigurableRules(configurableRules);
     }
 
 }
