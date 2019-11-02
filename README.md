@@ -66,5 +66,13 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
   
 4. Build your project with gradlew clean build : if some of your code is not compliant with the rules defined, the build will fail, pointing you to the rule and the class that is violating it.
 
+### Releasing a new version of the plugin
 
-Note : to publish in local repo during tests, use gradle -Dmaven.repo.local=.m2/repository publishToMavenLocal
+(to publish in local repo during tests, use gradle -Dmaven.repo.local=.m2/repository publishToMavenLocal)
+
+- make sure everything is committed, then run `gradlew release -Prelease.useAutomaticVersion=true` : 
+
+  - the -SNAPSHOT will be removed
+  - the version will be tagged and committed
+  - the version will be incremented with -SNAPSHOT  
+  
