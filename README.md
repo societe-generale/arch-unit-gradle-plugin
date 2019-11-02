@@ -33,32 +33,13 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
         apply plugin: 'com.societegenerale.commons.plugin.gradle.ArchUnitGradlePlugin'
     
         archUnit{
-            configureArchUnitGradleExtensionPreConfiguredRules {
-                        preConfiguredRule1 {
-                            rule = "com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest"
-                        }
-                        preConfiguredRule2 {
-                            rule = "com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest"
-                        }
-                        preConfiguredRule3 {
-                            rule = "com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest"
-                        }
-                     }
-
-            configureArchUnitGradleExtensionConfigurableRules {
-                        configurableRule1 {
-                            applyOnPackageName = "packageName1"
-                            applyOnScope = "scope1"
-                            rule = "rule1"
-                            check = ["check1a", "check1b"]
-                        }
-                        configurableRule2 {
-                            applyOnPackageName = "packageName2"
-                            applyOnScope = "scope2"
-                            rule = "rule2"
-                            check = ["check2a", "check2b"]
-                        }
-                    }
+        
+            preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest"]
+           
+            configurableRules=[configurableRule("rule1", applyOn("packageName1","main"), check("check1a","check1b") ),
+                               configurableRule("rule2", applyOn("packageName2","test"), check("check2a","check2b") )
+            ]
+  
         }
     }
     
