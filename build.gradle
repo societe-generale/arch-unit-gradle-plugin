@@ -2,15 +2,13 @@
 plugins {
     id 'java'
     id 'java-gradle-plugin'
+    id 'net.researchgate.release' version '2.6.0'
 }
 
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group 'com.societegenerale.commons.plugin.gradle'
-
-
-version '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
