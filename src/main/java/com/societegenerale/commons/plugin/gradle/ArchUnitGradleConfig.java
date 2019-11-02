@@ -3,69 +3,50 @@ package com.societegenerale.commons.plugin.gradle;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
-import groovy.lang.Closure;
-import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArchUnitGradleConfig {
 
-    private final NamedDomainObjectContainer<ContainerPreConfiguredRules> containerPreConfiguredRules;
-    private final NamedDomainObjectContainer<ContainerConfigurableRules> containerConfigurableRules;
+    private List<ConfigurableRule> configurableRules;
 
-    private Logger log = LoggerFactory.getLogger(ArchUnitGradleConfig.class);
+    private List<String> preConfiguredRules = new ArrayList<>();
 
     private Project project;
 
     private boolean skip = false;
 
-    public ArchUnitGradleConfig(Project project,NamedDomainObjectContainer<ContainerPreConfiguredRules> archUnitGradleExtensionPreConfiguredRules,NamedDomainObjectContainer<ContainerConfigurableRules> archUnitGradleExtensionConfigurableRules) {
-        this.containerPreConfiguredRules =archUnitGradleExtensionPreConfiguredRules;
-        this.containerConfigurableRules =archUnitGradleExtensionConfigurableRules;
+    public ArchUnitGradleConfig(Project project) {
         this.project = project;
     }
 
-    public void configureArchUnitGradleExtensionPreConfiguredRules(Closure closure){
-        containerPreConfiguredRules.configure(closure);
+    public void setPreConfiguredRules(List<String> preConfiguredRules) {
+        this.preConfiguredRules = preConfiguredRules;
     }
 
-    public void configureArchUnitGradleExtensionConfigurableRules(Closure closure){
-        containerConfigurableRules.configure(closure);
+    public void setConfigurableRules(List<ConfigurableRule> configurableRules) {
+        this.configurableRules = configurableRules;
     }
 
     public void setSkip(boolean skip) {
         this.skip = skip;
     }
 
-    private  List<String> preconfiguredRules(){
-
-        List<String> preConfiguredRules = containerPreConfiguredRules.stream().map(ContainerPreConfiguredRules::getRule).collect(Collectors.toList());
-
-        log.info("extracting {} pre-configured rules from config",preConfiguredRules.size());
-
-        return preconfiguredRules();
+    public ApplyOn applyOn(String packageName,String scope){
+        return new ApplyOn(packageName,scope);
     }
 
-    private List<ConfigurableRule> configurableRules(){
-
-        List<ConfigurableRule> configurableRules =containerConfigurableRules.stream().map(r -> new ConfigurableRule(r.getRule(),
-                                                                                                                    new ApplyOn(r.getApplyOnPackageName(),r.getApplyOnScope()),
-                                                                                                                    r.getCheck(),
-                                                                                                                    false))
-                                                                            .collect(Collectors.toList());
-
-        log.info("extracting {} configurable rules from config",configurableRules.size());
-
-        return configurableRules;
-    }
+    public List<String> check(String... checks){ return Arrays.asList(checks); }
 
     public Rules getRules() {
+        return new Rules(preConfiguredRules,configurableRules);
+    }
 
-        return new Rules(preconfiguredRules(),configurableRules());
+    public ConfigurableRule configurableRule(String rule, ApplyOn applyOn, List<String> checks) {
+        return new ConfigurableRule(rule,applyOn,checks,false);
     }
   
     public boolean isSkip() {
