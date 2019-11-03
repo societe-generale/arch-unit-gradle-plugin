@@ -7,7 +7,6 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'signing'
-//apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group 'com.societegenerale.commons.plugin.gradle'
@@ -48,9 +47,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             customizePom(pom)
-            groupId 'com.github.mautini'
-            artifactId 'schemaorg-java'
-            version '1.0.1'
+            groupId 'com.societegenerale.commons'
+            artifactId 'arch-unit-gradle-plugin'
+            version '1.0.0-SNAPSHOT'
 
             from components.java
 
@@ -110,32 +109,35 @@ def customizePom(pom) {
         root.children().last() + {
             resolveStrategy = Closure.DELEGATE_FIRST
 
-            description 'Serialize and Deserialize Json-LD into Java entities'
-            name 'Schema.org Java'
-            url 'https://github.com/mautini/schemaorg-java'
+            description 'Gradle plugin to run ArchUnit rules from build config'
+            name 'ArchUnit Gradle plugin'
+            url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
             organization {
-                name 'com.github.mautini'
-                url 'https://github.com/mautini'
+                name 'com.societegenerale'
+                url 'https://github.com/societe-generale'
             }
             issueManagement {
                 system 'GitHub'
-                url 'https://github.com/mautini/schemaorg-java/issues'
+                url 'https://github.com/societe-generale/arch-unit-gradle-plugin/issues'
             }
             licenses {
                 license {
                     name 'Apache License 2.0'
-                    url 'https://github.com/mautini/schemaorg-java/blob/master/LICENSE'
+                    url 'https://github.com/societe-generale/arch-unit-gradle-plugin/blob/master/LICENSE'
                     distribution 'repo'
                 }
             }
             scm {
-                url 'https://github.com/mautini/schemaorg-java'
-                connection 'scm:git:git://github.com/mautini/schemaorg-java.git'
-                developerConnection 'scm:git:ssh://git@github.com:mautini/schemaorg-java.git'
+                url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
+                connection 'scm:git:https://github.com/societe-generale/arch-unit-gradle-plugin.git'
+                developerConnection 'scm:git:ssh://git@github.com:societe-generale/arch-unit-gradle-plugin.git'
             }
             developers {
                 developer {
-                    name 'Mautini'
+                    name 'Marvin Kern'
+                }
+                developer {
+                    name 'Vincent Fuchs'
                 }
             }
         }
