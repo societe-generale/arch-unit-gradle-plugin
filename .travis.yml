@@ -23,7 +23,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: gradlew GenerateMavenPom publish --settings release/mvnsettings.xml
+  script: gradlew publish
   skip_cleanup: true
   on:
     tags: true
