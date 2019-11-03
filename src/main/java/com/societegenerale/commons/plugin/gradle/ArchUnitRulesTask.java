@@ -15,7 +15,7 @@ public class ArchUnitRulesTask extends DefaultTask {
 
     private ArchUnitGradleConfig archUnitGradleConfig;
 
-    private Log logger = new GradleLogAdapter(LoggerFactory.getLogger("archunit-gradle-plugin"));
+    private Log logger = new GradleLogAdapter(LoggerFactory.getLogger(ArchUnitRulesTask.class));
 
     private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Gradle plugin reported architecture failures listed below :";
 
@@ -40,7 +40,7 @@ public class ArchUnitRulesTask extends DefaultTask {
 
         String ruleFailureMessage = "";
 
-        RuleInvokerService ruleInvokerService = new RuleInvokerService(logger);
+        RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)));
       
         ruleFailureMessage = ruleInvokerService.invokeRules(rules, archUnitGradleConfig.getProjectPath());
 

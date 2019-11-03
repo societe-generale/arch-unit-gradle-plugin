@@ -7,10 +7,7 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
 
     public void apply(Project project) {
 
-        NamedDomainObjectContainer<ContainerPreConfiguredRules> ContainerPreConfiguredRules =project.container(ContainerPreConfiguredRules.class);
-        NamedDomainObjectContainer<ContainerConfigurableRules> ContainerConfigurableRules =project.container(ContainerConfigurableRules.class);
-
-        ArchUnitGradleConfig archUnitGradleConfig = project.getExtensions().create("archUnit", ArchUnitGradleConfig.class, project, ContainerPreConfiguredRules, ContainerConfigurableRules);
+        ArchUnitGradleConfig archUnitGradleConfig = project.getExtensions().create("archUnit", ArchUnitGradleConfig.class, project);
 
         Task archUnitTask=project.getTasks().create("checkRules", ArchUnitRulesTask.class, archUnitGradleConfig);
 
