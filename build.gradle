@@ -41,6 +41,7 @@ artifacts {
 signing {
     sign configurations.archives
 }
+build.dependsOn.remove(signArchives)
 
 release {
 
