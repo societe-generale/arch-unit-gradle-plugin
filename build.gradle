@@ -40,6 +40,8 @@ artifacts {
 
 release {
 
+    failOnUpdateNeeded = false
+
     git {
         requireBranch = 'travisConfigForMavenPublish'
     }
