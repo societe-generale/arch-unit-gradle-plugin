@@ -106,4 +106,5 @@ uploadArchives {
     }
 }
 
+afterReleaseBuild.dependsOn uploadArchives
 

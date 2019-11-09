@@ -1,31 +1,16 @@
 language: java
-install: true
-
+jdk:
+  - oraclejdk8
+install:
+  - ./gradlew assemble -x signArchives
+script:
+  - ./gradlew check
+after_success:
+  - ./release/deploy.sh
 env:
   global:
-    - secure: "the base64 string from when you encrypted OSSRH_JIRA_USERNAME"
-    - # ^^ OSSRH_JIRA_USERNAME
-    - secure: "the base64 string from when you encrypted OSSRH_JIRA_PASSWORD"
-    - # ^^ OSSRH_JIRA_PASSWORD
-    - secure: "the base64 string from when you encrypted GPG_KEY_NAME"
-    - # ^^ GPG_KEY_NAME
-    - secure: "the base64 string from when you encrypted GPG_PASSPHRASE"
-    - # ^^ GPG_PASSPHRASE
-
-jdk:
-  - openjdk8
-script:
-  - ./gradlew clean build
-
-before_deploy:
-  - release/createReleaseProperties.sh
-  - echo $GPG_SECRET_KEYS | base64 --decode | gpg --import
-  - echo $GPG_OWNERTRUST | base64 --decode | gpg --import-ownertrust
-
-deploy:
-  provider: script
-  script: gradlew publish
-  skip_cleanup: true
-  on:
-    tags: true
+  - secure: jSKk79zOID3gUB24k0GWVxKy30M8EqJugb+uEM2euiaKJvKyYz1FGPJ1Mk+bqRUdBx8BdUkKw+lPVsi4VmvoD5fvoUEPn9IgDgEaK5vVSx9sQFpK4L9jSFEt1D5yvBK0qb/xyNrFdhW3TsrduaFG5ABUsS5YfXgYOasFxAHWqa/ufis7wOinHXiT0RiV8MnfofpjXg7URW3WYg4qmG/joHNyPD/xgoMAKtraFNlwXlIpNYleWNRTAKTF6jvQX2Y1rExS0PTdhpKVQI64X5s8gCZYB/S8djgnxlkZ78uYX6b0wqtjcMQ8D5ADu2Mpup8WMzvh3RF/32bXoSfNA9++79QvA9Vq/BX4zvVbNTxK4iS0QK/IjLEY1kvew1aC7Z2j9Zt4mC+6r/OWPkaBGP457O1/89gsxoUW3wcXL4/gJwRtf1YjdMj+oZq5G3lPxt3Ux3HFg2RTYqPoBcTHB5geqEEjVn7MwEf82jjQAYvvtdq2+Ke69jrGENNJNDpweyW1Yr8UbSvDIxZSsxSBT5hKXKPtcFq9PoIoLyP2qHGjXq3qlTZWdLxggmIqWxm6fpf3v+e56HXglMbdgPYTEBdCo7DfIz/jfKk2T8FebdJMuTNwZsielDQ0riPxwWQlm3WYMVyUy0T3v3tjkMzhq9oHoULiGlcuHqosbrSbiTP8xv0=
+  - secure: fQ3pJJtu6zrdrr/pyR/qW210/6PKWtYxpKcpUAP41O8sUw696v5LDNyAAwcecK//Iy4houcZtbUWuNjyttBEfFXi+/uoA4vI/lPaDQxh66mu3kOPD8/GoX8GgMh1JNd9wy8wEf5DAPLl3Uy0R7gFOn7GEUFodOuK/oUoOKrfAYvQZhQDv2DV8l6G1OYpLq5WRv0iZksOkJ1q6nEe4Tnle2T6CC1FOisIItW1/hjkxuY7s5Lc/AVO9QcMl3L8ggNsPLy1iGDMgNgfZ8OcLawn/UuMPme9jwQoxFX9oWUUiieI/ZE3G/paJFfskLgP/nZC2Hcqj1XoT6/oYz6jzwnxsDhBDr+ICAth2RMYzimxgcQ7eodna4WZZI80GlVJdBymPI0sYt/vCrp82Ny59R3kifsngTkLAZ4mTNi6/wl1U4cz+XKDr+KWolwUCpXnBvstI6fIzyHbs/AFxDLC9iv7nYS4jCStm3G/u1Up+7mlQMFg/LaGXXYNatUspJdPeUUFQgCwyVR+EHfPOLfIM0vZWKvu1BqzAv5049AEuK62HBNcYEqI5bhA70iX/wA81AHnrv0k+4k5eQIPi7ajtuVVtRaYHoeYPY9qnGSwawU33wYei2ZjuQj7H6KzjnCAyGUbA4G4iLg0i9p4+ejsJl95uTu+eqi55QnfKzyj7B5jgvY=
+  - secure: MQds0MXX91YFR2sg+Nqx+N5VSky88IOMAtAm8FoFum1mpl7L2is6gVDIVAESBA9FxYdhKZVc08oplX3no9++wZRX7J9zUvsJI3j+6qajhmcsL1LQlhl+8pfdbAe6nJqZS6QbistkZPMsUGb9VW8g5QFFpqsR0bPHaf39WOaClqOu5X0xj2WNHCu0qO7VkTTvAeOGEfxSHkn20QDSHkNgUzeTRh9ngioULTgSLDK7ea3XanY/q9gVO1TAeGnIooQDkGSjekZaRPnAWlI8MuJr7U/l4on525LwW83zWVyXGxdC7QOH6OgTP4/ePBxiWEq5uR+95rjprK6rdaO1LtWRO2AtNBYWbqjdupwh+x8Lwj01V6YYzcH4Q3Q1kkswjavtyjzzrlf8RhWHRBATCLgCjy3tmrTmkW4K/MJKvIP0BnnZim2jo/ZuXbn2W8TyMGHX68G/kIPVT7s+WcAn2kmoXk0PVuXDIpWlsFnz8nVEbYtZ3MxCyKyadaRWsJtRWRhBVaO4PfKCCfycnS3LgDN1bvVrGo30r3a9qcgd9Katq+MnKnJd8rEJtpbm2zmQLbi1EYXumHqsnVi4S/YMSrAuR1vxLVxN8JxLNzss9j9FB1WsVHOHl94X0N/waso9JuGrwx0AmglSJ1BwFmOf8o7YrFsfkmzNRtWMAlyarMrFIJU=
+  - secure: TPAChxmmU0qBz76P9RIP+Rh8IayHW1Xbb8GV1nuTjm2CsTABXUrjUYLClG7bxD0SX0L/kf42DTnlfPIKgzUYkPxCL7GPTDuydMMbCFD3Chy7SsAwkLFfYYtZpQ/ljH/RqnZBBp3+jalS3dqfp2r9/PT7vlzk+ildFDcFgr42yd9ucGRlELM010VGpp0VOH5k39YinDt+Fvk4gPOpVKyKX+VKYCrM5LS18nMIXB3tWC1Fjr8R8bzGdKKjZwcMfRLuCcdc7vaP9foLpKwJh3TALbsQNnn8mdrw2XSMo/S9G18yY8TuEdt8hICG7YTFsc6aorv+yQ1k3t1hnFstRHSWzufnc30k/lvnVcwQsl2bZCOTqw/sVQttpyX+fBQhUtCvHed56+yQJGi/tFi/k0N5xdOddGCu8HwuzSCQmUicoPZEOn5rchG6Bp1thSAFCE30e2WhUaoxr+Ifj1YRB6Xi8kZaJ3kYT16UeSYjN8VFSc9KX2GTBv34cVhxbvSayaffUuDOUEJ9utuixO23olQ8U5a/X4sTMRwCJT7zznrHDsGX/rmFkDP4Wy5/aczbbJhwicw/L4Lk3V2IBvm5g+0mOXpEmLo1iK3tm6NBo5erzX1QXpAku35n3Z9BVAu4fkYltJWHjYEeNSckxxbT2B8RkANhQ+LtPhFtcYt4FJKfh/M=
 
