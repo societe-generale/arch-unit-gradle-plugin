@@ -6,10 +6,9 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'signing'
 apply plugin: 'maven-publish'
 
-group 'com.societegenerale.commons.plugin.gradle'
+sourceCompatibility = 1.8
 
 repositories {
     mavenLocal()
@@ -21,8 +20,6 @@ dependencies {
     implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.3.1'
 }
 
-
-// below taken from https://medium.com/@nmauti/sign-and-publish-on-maven-central-a-project-with-the-new-maven-publish-gradle-plugin-22a72a4bfd4b
 task sourceJar(type: Jar) {
     classifier "sources"
     from sourceSets.main.allJava
@@ -39,119 +36,13 @@ artifacts {
     archives javadocJar
 }
 
-signing {
-    sign configurations.archives
-}
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            customizePom(pom)
-            groupId 'com.societegenerale.commons'
-            artifactId 'arch-unit-gradle-plugin'
-            version '1.0.0-SNAPSHOT'
 
-            from components.java
+release {
 
-            // create the sign pom artifact
-            pom.withXml {
-                def pomFile = file("${project.buildDir}/generated-pom.xml")
-                writeTo(pomFile)
-                def pomAscFile = signing.sign(pomFile).signatureFiles[0]
-                artifact(pomAscFile) {
-                    classifier = null
-                    extension = 'pom.asc'
-                }
-            }
-
-            artifact(sourceJar) {
-                classifier = 'sources'
-            }
-            artifact(javadocJar) {
-                classifier = 'javadoc'
-            }
-
-            // create the signed artifacts
-            project.tasks.signArchives.signatureFiles.each {
-                artifact(it) {
-                    def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
-                    if (matcher.find()) {
-                        classifier = matcher.group(1)
-                    } else {
-                        classifier = null
-                    }
-                    extension = 'jar.asc'
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            credentials {
-                username sonatypeUsername
-                password sonatypePassword
-            }
-        }
+    git {
+        requireBranch = 'travisConfigForMavenPublish'
     }
 }
 
-def customizePom(pom) {
-    pom.withXml {
-        def root = asNode()
 
-        // eliminate test-scoped dependencies (no need in maven central POMs)
-        root.dependencies.removeAll { dep ->
-            dep.scope == "test"
-        }
-
-        // add all items necessary for maven central publication
-        root.children().last() + {
-            resolveStrategy = Closure.DELEGATE_FIRST
-
-            description 'Gradle plugin to run ArchUnit rules from build config'
-            name 'ArchUnit Gradle plugin'
-            url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
-            organization {
-                name 'com.societegenerale'
-                url 'https://github.com/societe-generale'
-            }
-            issueManagement {
-                system 'GitHub'
-                url 'https://github.com/societe-generale/arch-unit-gradle-plugin/issues'
-            }
-            licenses {
-                license {
-                    name 'Apache License 2.0'
-                    url 'https://github.com/societe-generale/arch-unit-gradle-plugin/blob/master/LICENSE'
-                    distribution 'repo'
-                }
-            }
-            scm {
-                url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
-                connection 'scm:git:https://github.com/societe-generale/arch-unit-gradle-plugin.git'
-                developerConnection 'scm:git:ssh://git@github.com:societe-generale/arch-unit-gradle-plugin.git'
-            }
-            developers {
-                developer {
-                    name 'Marvin Kern'
-                }
-                developer {
-                    name 'Vincent Fuchs'
-                }
-            }
-        }
-    }
-}
-
-model {
-    tasks.generatePomFileForMavenJavaPublication {
-        destination = file("$buildDir/generated-pom.xml")
-    }
-    tasks.publishMavenJavaPublicationToMavenLocal {
-        dependsOn project.tasks.signArchives
-    }
-    tasks.publishMavenJavaPublicationToMavenRepository {
-        dependsOn project.tasks.signArchives
-    }
-}
