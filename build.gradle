@@ -42,16 +42,6 @@ signing {
     sign configurations.archives
 }
 
-
-release {
-
-    failOnUpdateNeeded = false
-
-    git {
-        requireBranch = 'travisConfigForMavenPublish'
-    }
-}
-
 def v_ossrhUsername="FOO"
 def v_ossrhPassword="BAR"
 
@@ -100,6 +90,10 @@ uploadArchives {
                     developer {
                         id 'vincent-fuchs'
                         name 'Vincent FUCHS'
+                    }
+                    developer {
+                        id 'MarvinKern'
+                        name 'Marvin KERN'
                     }
                 }
             }
