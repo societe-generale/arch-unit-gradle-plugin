@@ -15,7 +15,7 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
 ```
    buildscript {
        dependencies {
-           classpath "com.societegenerale.commons.plugin.gradle:arch-unit-gradle-plugin:1.0.1-SNAPSHOT"
+           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.1"
        }
        repositories {
            mavenCentral()
