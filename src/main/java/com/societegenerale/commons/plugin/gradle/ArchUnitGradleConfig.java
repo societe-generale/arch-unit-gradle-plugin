@@ -5,14 +5,15 @@ import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import org.gradle.api.Project;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ArchUnitGradleConfig {
 
-    private List<ConfigurableRule> configurableRules;
+    private List<ConfigurableRule> configurableRules = new ArrayList<>();
 
-    private List<String> preConfiguredRules ;
+    private List<String> preConfiguredRules = new ArrayList<>();
 
     private Project project;
 
