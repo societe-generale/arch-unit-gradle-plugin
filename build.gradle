@@ -66,23 +66,23 @@ uploadArchives {
             }
 
             pom.project {
-                name 'arch-unit-maven-plugin'
+                name 'ArchUnit Gradle Plugin'
                 packaging 'jar'
                 artifactId archivesBaseName
                 version version
                 description 'A Gradle plugin to run packaged ArchUnit rules'
-                url 'https://github.com/societe-generale/arch-unit-maven-plugin'
+                url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
 
                 scm {
-                    connection 'scm:git:git://github.com/societe-generale/arch-unit-maven-plugin.git'
-                    developerConnection 'scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git'
-                    url 'https://github.com/societe-generale/arch-unit-maven-plugin'
+                    connection 'scm:git:git://github.com/societe-generale/arch-unit-gradle-plugin.git'
+                    developerConnection 'scm:git:git@github.com:societe-generale/arch-unit-gradle-plugin.git'
+                    url 'https://github.com/societe-generale/arch-unit-gradle-plugin'
                 }
 
                 licenses {
                     license {
                         name 'Apache 2'
-                        url 'https://github.com/societe-generale/arch-unit-maven-plugin/blob/master/LICENSE.md'
+                        url 'https://github.com/societe-generale/arch-unit-gradle-plugin/blob/master/LICENSE.md'
                     }
                 }
 
