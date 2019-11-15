@@ -13,13 +13,23 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
 
         archUnitTask.setGroup("verification");
 
+        System.out.println("project build path : "+project.getBuildDir());
+
+        final Task checkTask = project.getTasks().findByName("check");
+
         final Task testTask = project.getTasks().findByName("test");
+
+        if (checkTask==null){
+            throw new GradleException("can't find the 'check' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
+        }
 
         if (testTask==null){
             throw new GradleException("can't find the 'test' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
         }
 
-        testTask.dependsOn(archUnitTask);
+
+        checkTask.dependsOn(archUnitTask);
+        archUnitTask.mustRunAfter(testTask);
 
     }
 }
