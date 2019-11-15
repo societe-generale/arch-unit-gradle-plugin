@@ -13,8 +13,6 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
 
         archUnitTask.setGroup("verification");
 
-        System.out.println("project build path : "+project.getBuildDir());
-
         final Task checkTask = project.getTasks().findByName("check");
 
         final Task testTask = project.getTasks().findByName("test");
