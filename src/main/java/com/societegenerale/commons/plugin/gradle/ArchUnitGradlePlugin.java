@@ -13,13 +13,23 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
 
         archUnitTask.setGroup("verification");
 
-        final Task testTask = project.getTasks().findByName("test");
+        final Task checkTask = findExistingTaskOrFailOtherwise("check",project);
 
-        if (testTask==null){
-            throw new GradleException("can't find the 'test' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
+        final Task testTask = findExistingTaskOrFailOtherwise("test",project);
+
+        checkTask.dependsOn(archUnitTask);
+        archUnitTask.mustRunAfter(testTask);
+
+    }
+
+    private Task findExistingTaskOrFailOtherwise(String taskName, Project project){
+
+        final Task taskToFind = project.getTasks().findByName(taskName);
+
+        if (taskToFind==null){
+            throw new GradleException("can't find the '"+taskToFind+"' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
         }
 
-        testTask.dependsOn(archUnitTask);
-
+        return taskToFind;
     }
 }

@@ -48,13 +48,18 @@ public class ArchUnitGradleConfig {
     public ConfigurableRule configurableRule(String rule, ApplyOn applyOn, List<String> checks) {
         return new ConfigurableRule(rule,applyOn,checks,false);
     }
+
+    public ConfigurableRule configurableRule(String rule, ApplyOn applyOn) {
+        return new ConfigurableRule(rule,applyOn,new ArrayList<>(),false);
+    }
   
     public boolean isSkip() {
         return skip;
     }
 
-    public String getProjectPath() {
-        return project.getProjectDir().toString();
+    public String getBuildPath() {
+
+        return project.getBuildDir().toString();
     }
 
 }
