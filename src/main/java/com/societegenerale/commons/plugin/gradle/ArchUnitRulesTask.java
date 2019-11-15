@@ -40,9 +40,10 @@ public class ArchUnitRulesTask extends DefaultTask {
 
         String ruleFailureMessage = "";
 
-        RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)));
+        RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
+                                                                        new GradleScopePathProvider());
       
-        ruleFailureMessage = ruleInvokerService.invokeRules(rules, archUnitGradleConfig.getProjectPath());
+        ruleFailureMessage = ruleInvokerService.invokeRules(rules, archUnitGradleConfig.getBuildPath());
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
             throw new GradleException(PREFIX_ARCH_VIOLATION_MESSAGE + " \n" + ruleFailureMessage);
