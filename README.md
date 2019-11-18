@@ -2,6 +2,14 @@
 
 [![Build Status](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin)
 
+
+
+![Gefa logo](./gefa_logo.png)
+
+
+
+In the dev team at [Gefa Bank GmbH](https://www.gefa-bank.de/), we really liked how [ArchUnit Maven plugin](https://github.com/societe-generale/arch-unit-maven-plugin) was enabling teams to distribute rules across projects. Only "problem" was that we're using Gradle, not Maven. So we decided to write an equivalent plugin, but for Gradle. 
+
 A gradle wrapper around ArchUnit, to easily share and enforce architecture rules across projects. This plugin is under construction and the java tests are still missing!
 
 The option to use configurable rules has been added but has not been tested yet!
@@ -15,7 +23,7 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
 ```
    buildscript {
        dependencies {
-           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.1"
+           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.2"
        }
        repositories {
            mavenCentral()
