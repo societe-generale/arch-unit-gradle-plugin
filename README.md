@@ -19,7 +19,6 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
        }
        repositories {
            mavenCentral()
-           mavenLocal()
        }
    }
 ```
@@ -34,11 +33,18 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
     
         archUnit{
         
-            preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest"]
-           
-            configurableRules=[configurableRule("rule1", applyOn("packageName1","main"), check("check1a","check1b") ),
-                               configurableRule("rule2", applyOn("packageName2","test"), check("check2a","check2b") )
-            ]
+                  preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoInjectedFieldTest",
+                            "com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest",
+                            "com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest",
+                            "com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest",
+                            "com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest",
+                            "com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest",
+                            "com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest",
+                            "com.societegenerale.commons.plugin.rules.HexagonalArchitectureTest",
+                            "com.societegenerale.commons.plugin.rules.DontReturnNullCollectionTest"
+                                    ]
+
+                  configurableRules=[configurableRule("com.tngtech.archunit.library.GeneralCodingRules", applyOn("com.my.project","main") )]
   
         }
     }
