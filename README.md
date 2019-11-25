@@ -5,7 +5,7 @@
 
 
 <p align="center">
-  <img src="./gefa_logo.png" height="50%" title="Gefa Bank Logo">
+  <img src="./gefa_logo.png" height="30%" title="Gefa Bank Logo">
 </p>
 
 
