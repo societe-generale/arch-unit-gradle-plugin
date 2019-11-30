@@ -26,7 +26,7 @@ To use the plugin, your `build.gradle` require these changes:
 ```Gradle
    buildscript {
        dependencies {
-           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.2"
+           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.3"
        }
        repositories {
            mavenCentral()
