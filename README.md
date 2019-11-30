@@ -5,7 +5,7 @@
 
 
 <p align="center">
-  <img src="./gefa_logo.png" width="353" height="98" title="Gefa Bank Logo">
+  <img src="./gefa_logo.png" title="Gefa Bank Logo">
 </p>
 
 
