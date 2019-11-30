@@ -4,23 +4,26 @@
 
 
 
-![Gefa logo](./gefa_logo.png)
+<p align="center">
+  <img src="./gefa_logo.png" width="353" height="98" title="Gefa Bank Logo">
+</p>
 
 
+### Context
 
-In the dev team at [Gefa Bank GmbH](https://www.gefa-bank.de/), we really liked how [ArchUnit Maven plugin](https://github.com/societe-generale/arch-unit-maven-plugin) was enabling teams to distribute rules across projects. Only "problem" was that we're using Gradle, not Maven. So we decided to write an equivalent plugin, but for Gradle. 
+In our dev team at [Gefa Bank GmbH](https://www.gefa-bank.de/), we really liked how [ArchUnit Maven plugin](https://github.com/societe-generale/arch-unit-maven-plugin) was enabling teams to distribute rules across projects. Only "problem" was that we're using Gradle, not Maven. So we decided to write an equivalent plugin for Gradle. 
 
-A gradle wrapper around ArchUnit, to easily share and enforce architecture rules across projects. This plugin is under construction and the java tests are still missing!
+### What is it, and how does it work ?
 
-The option to use configurable rules has been added but has not been tested yet!
+ArchUnit-Gradle-plugin is a wrapper around [Arch-Unit-Build-Plugin-Core](https://github.com/societe-generale/arch-unit-build-plugin-core), which itself is a wrapper around [ArchUnit](https://www.archunit.org/), that enables you to easily make sure all your projects follow the same architecture rules.
+ 
+Using a plugin brings a way to manage the rules through build configuration and to easily share and enforce architecture rules across projects. 
 
-This plugin is based on https://github.com/societe-generale/arch-unit-build-plugin-core.
+To use the plugin, your `build.gradle` require these changes:
 
-To use the plugin, some steps have to be done in the `build.gradle` file in the project where you want to use this plugin :
+1. Declare the dependency to the plugin :
 
-1. Your build script has to contain following code, to set a dependency on the plugin:
-
-```
+```Gradle
    buildscript {
        dependencies {
            classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.2"
@@ -31,9 +34,9 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
    }
 ```
 
-2. You have to apply the java plugin and the ArchUnitGradlePlugin, then configure it:
+2. Apply the `java` plugin and the `ArchUnitGradlePlugin`, then configure it:
 
-```
+```Gradle
     allprojects {
     
         apply plugin: 'java'
@@ -59,11 +62,17 @@ To use the plugin, some steps have to be done in the `build.gradle` file in the 
     
 ```
   
-4. Build your project with gradlew clean build : if some of your code is not compliant with the rules defined, the build will fail, pointing you to the rule and the class that is violating it.
+4. Build your project with `gradlew clean build` : if some of your code is not compliant with the rules defined, the build will fail, pointing you to the rule(s) and the class(es) that are violating it.
+
+### Adding new rules
+
+All rules referenced in the configuration have to be available in the classpath. Therefore, you have 2 solutions : 
+- package your rule into a custom jar, add a dependency to this jar (probably with `test` scope) and declare the rule in the config
+- Propose your rule through a PullRequest to [Arch-Unit-Build-Plugin-Core](https://github.com/societe-generale/arch-unit-build-plugin-core) : if it's accepted, it will be part of the next release and usable by everyone. 
 
 ### Releasing a new version of the plugin
 
-(to publish in local repo during tests, use gradle -Dmaven.repo.local=.m2/repository publishToMavenLocal)
+(to publish in local repo during tests, use `gradlew -Dmaven.repo.local=.m2/repository publishToMavenLocal`)
 
 - make sure everything is committed, then run `gradlew release -Prelease.useAutomaticVersion=true` : 
 
