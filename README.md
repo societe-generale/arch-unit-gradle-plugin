@@ -78,5 +78,6 @@ All rules referenced in the configuration have to be available in the classpath.
 
   - the -SNAPSHOT will be removed
   - the version will be tagged and committed
-  - the version will be incremented with -SNAPSHOT  
+  - the version will be incremented with -SNAPSHOT
+  - the plugin will be uploaded to https://plugins.gradle.org/plugin/com.societegenerale.common.arch-unit-gradle-plugin/   
   
