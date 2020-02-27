@@ -27,7 +27,7 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
         final Task taskToFind = project.getTasks().findByName(taskName);
 
         if (taskToFind==null){
-            throw new GradleException("can't find the '"+taskToFind+"' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
+            throw new GradleException("can't find the '"+taskName+"' task on which archUnitGradle task will depend - please check Gradle java plugin is applied");
         }
 
         return taskToFind;
