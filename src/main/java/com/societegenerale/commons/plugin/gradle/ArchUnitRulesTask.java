@@ -10,6 +10,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.lang.reflect.InvocationTargetException;
 
 public class ArchUnitRulesTask extends DefaultTask {
 
@@ -25,7 +26,7 @@ public class ArchUnitRulesTask extends DefaultTask {
     }
 
     @TaskAction
-    public void checkRules() {
+    public void checkRules() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         if (archUnitGradleConfig.isSkip()) {
             logger.warn("Rule checking has been skipped!");
