@@ -44,6 +44,8 @@ To use the plugin, your `build.gradle` require these changes:
     
         archUnit{
         
+                 excludedPaths=["generated-sources"]
+
                   preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoInjectedFieldTest",
                             "com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest",
                             "com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest",
