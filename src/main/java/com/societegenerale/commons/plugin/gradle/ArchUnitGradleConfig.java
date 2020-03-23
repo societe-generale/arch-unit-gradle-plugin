@@ -14,6 +14,8 @@ public class ArchUnitGradleConfig {
     private List<ConfigurableRule> configurableRules = new ArrayList<>();
 
     private List<String> preConfiguredRules = new ArrayList<>();
+    
+    private List<String> excludedPaths = new ArrayList<>();
 
     private Project project;
 
@@ -58,8 +60,14 @@ public class ArchUnitGradleConfig {
     }
 
     public String getBuildPath() {
-
         return project.getBuildDir().toString();
+    }
+    public List<String> getExcludedPaths() {
+        return excludedPaths;
+    }
+
+    public void setExcludedPaths(List<String> excludedPaths) {
+        this.excludedPaths = excludedPaths;
     }
 
 }
