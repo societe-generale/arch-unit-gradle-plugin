@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.5.1'
+    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.5.2'
 }
 
 task sourceJar(type: Jar) {
@@ -106,7 +106,7 @@ uploadArchives {
 gradlePlugin {
     plugins {
         archUnitGradlePlugin {
-            id = 'com.societegenerale.common.arch-unit-gradle-plugin'
+            id = 'com.societegenerale.commons.arch-unit-gradle-plugin'
             implementationClass = 'com.societegenerale.commons.plugin.gradle.ArchUnitGradlePlugin'
         }
     }
