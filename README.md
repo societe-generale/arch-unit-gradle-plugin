@@ -55,7 +55,7 @@ To use the plugin, your `build.gradle` require these changes:
                             "com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest",
                             "com.societegenerale.commons.plugin.rules.HexagonalArchitectureTest",
                             "com.societegenerale.commons.plugin.rules.DontReturnNullCollectionTest",
-                            "com.societegenerale.commons.plugin.rules.DontReturnNullCollectionTest"
+                            "com.societegenerale.commons.plugin.rules.StringFieldsThatAreActuallyDatesRuleTest"
                                     ]
 
                   configurableRules=[configurableRule("com.tngtech.archunit.library.GeneralCodingRules", applyOn("com.my.project","main") )]
