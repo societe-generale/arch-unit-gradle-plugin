@@ -26,7 +26,7 @@ To use the plugin, your `build.gradle` require these changes:
 ```Gradle
    buildscript {
        dependencies {
-           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.0.3"
+           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:1.1.1"
        }
        repositories {
            mavenCentral()
@@ -54,6 +54,7 @@ To use the plugin, your `build.gradle` require these changes:
                             "com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest",
                             "com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest",
                             "com.societegenerale.commons.plugin.rules.HexagonalArchitectureTest",
+                            "com.societegenerale.commons.plugin.rules.DontReturnNullCollectionTest",
                             "com.societegenerale.commons.plugin.rules.DontReturnNullCollectionTest"
                                     ]
 
