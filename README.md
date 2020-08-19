@@ -44,7 +44,7 @@ To use the plugin, your `build.gradle` require these changes:
     
         archUnit{
         
-                 excludedPaths=["generated-sources"]
+                 excludedPaths=["some.package"]
 
                   preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoInjectedFieldTest",
                             "com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest",
@@ -75,12 +75,5 @@ All rules referenced in the configuration have to be available in the classpath.
 
 ### Releasing a new version of the plugin
 
-(to publish in local repo during tests, use `gradlew -Dmaven.repo.local=.m2/repository publishToMavenLocal`)
+to publish in local repo during tests, use `gradlew -Dmaven.repo.local=.m2/repository publishToMavenLocal`
 
-- make sure everything is committed, then run `gradlew release -Prelease.useAutomaticVersion=true` : 
-
-  - the -SNAPSHOT will be removed
-  - the version will be tagged and committed
-  - the version will be incremented with -SNAPSHOT
-  - the plugin will be uploaded to https://plugins.gradle.org/plugin/com.societegenerale.common.arch-unit-gradle-plugin/   
-  
