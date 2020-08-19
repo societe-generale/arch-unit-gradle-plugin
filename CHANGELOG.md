@@ -12,6 +12,11 @@
 
 ### Fixed
 
+## [2.6.1] - 2020-08-19
+
+### Fixed
+ - GradleScopePathProvider now uses project build paths
+
 ## [2.6.0] - 2020-08-19
 
 ### Changed
