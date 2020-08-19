@@ -12,6 +12,25 @@
 
 ### Fixed
 
+## [2.6.0] - 2020-08-19
+
+### Changed
+ - PR #15 - upgrading to arch unit core 2.6.0
+ - Aligning arch-unit-gradle-plugin version with arch-unit-core 
+
+## [1.1.1] - 2020-06-20
+
+### Changed
+ - PR #14 - upgrading to arch unit core 2.5.3
+
+## [1.1.0] - 2020-03-04
+
+### Changed
+ - PR #12 - upgrading to arch unit core 2.5.2
+ 
+### Fixed
+ - PR #11 - fixing some error reporting
+
 ## [1.0.2] - 2019-11-16
 
 ### Fixed

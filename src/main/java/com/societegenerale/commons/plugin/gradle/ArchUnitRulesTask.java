@@ -45,7 +45,7 @@ public class ArchUnitRulesTask extends DefaultTask {
                                                                         new GradleScopePathProvider(),
                                                                         archUnitGradleConfig.getExcludedPaths());
       
-        ruleFailureMessage = ruleInvokerService.invokeRules(rules, archUnitGradleConfig.getBuildPath());
+        ruleFailureMessage = ruleInvokerService.invokeRules(rules);
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
             throw new GradleException(PREFIX_ARCH_VIOLATION_MESSAGE + " \n" + ruleFailureMessage);

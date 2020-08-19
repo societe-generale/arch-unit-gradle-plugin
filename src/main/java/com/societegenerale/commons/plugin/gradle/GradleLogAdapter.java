@@ -18,8 +18,16 @@ public class GradleLogAdapter implements Log {
     }
 
     @Override
+    public boolean isDebugEnabled() { return logger.isDebugEnabled(); }
+
+    @Override
     public void info(String s) {
         logger.info(s);
+    }
+
+    @Override
+    public void debug(String s) {
+
     }
 
     @Override
