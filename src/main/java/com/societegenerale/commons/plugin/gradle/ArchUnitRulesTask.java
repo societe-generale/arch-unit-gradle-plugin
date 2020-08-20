@@ -42,7 +42,7 @@ public class ArchUnitRulesTask extends DefaultTask {
         String ruleFailureMessage = "";
 
         RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
-                                                                        new GradleScopePathProvider(),
+                                                                        new GradleScopePathProvider(archUnitGradleConfig),
                                                                         archUnitGradleConfig.getExcludedPaths());
       
         ruleFailureMessage = ruleInvokerService.invokeRules(rules);
