@@ -1,7 +1,7 @@
 # ArchUnit Gradle plugin
 
 [![Build Status](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin)
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-gradle-plugin/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-gradle-plugin)
 
 
 <p align="center">
@@ -19,6 +19,8 @@ ArchUnit-Gradle-plugin is a wrapper around [Arch-Unit-Build-Plugin-Core](https:/
  
 Using a plugin brings a way to manage the rules through build configuration and to easily share and enforce architecture rules across projects. 
 
+Latest version of the plugin is available on https://plugins.gradle.org/plugin/com.societegenerale.commons.arch-unit-gradle-plugin
+
 To use the plugin, your `build.gradle` require these changes:
 
 1. Declare the dependency to the plugin :
@@ -26,7 +28,7 @@ To use the plugin, your `build.gradle` require these changes:
 ```Gradle
    buildscript {
        dependencies {
-           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:2.6.0"
+           classpath "com.societegenerale.commons:arch-unit-gradle-plugin:2.6.1"
        }
        repositories {
            mavenCentral()
@@ -44,7 +46,7 @@ To use the plugin, your `build.gradle` require these changes:
     
         archUnit{
         
-                 excludedPaths=["some.package"]
+                 excludedPaths=["some/package"]
 
                   preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoInjectedFieldTest",
                             "com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest",
