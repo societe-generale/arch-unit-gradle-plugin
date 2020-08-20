@@ -1,7 +1,7 @@
 # ArchUnit Gradle plugin
 
 [![Build Status](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-gradle-plugin)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-gradle-plugin/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-gradle-plugin)
+[![Gradle plugin](https://img.shields.io/maven-metadata/v.svg?label=gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fcom%2Fsocietegenerale%2Fcommons%2Farch-unit-gradle-plugin%2Fcom.societegenerale.commons.arch-unit-gradle-plugin.gradle.plugin%2Fmaven-metadata.xml)](https://plugins.gradle.org/plugin/com.societegenerale.commons.arch-unit-gradle-plugin)
 
 
 <p align="center">
