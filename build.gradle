@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.7.0'
+    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.7.1'
 }
 
 task sourceJar(type: Jar) {
