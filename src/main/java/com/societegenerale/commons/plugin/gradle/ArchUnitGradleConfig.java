@@ -3,6 +3,7 @@ package com.societegenerale.commons.plugin.gradle;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
+import com.societegenerale.commons.plugin.model.ScopePaths;
 import org.gradle.api.Project;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class ArchUnitGradleConfig {
     private List<String> preConfiguredRules = new ArrayList<>();
     
     private List<String> excludedPaths = new ArrayList<>();
+
+    private ScopePaths scopePaths= new ScopePaths("","");
 
     private Project project;
 
@@ -68,6 +71,14 @@ public class ArchUnitGradleConfig {
 
     public void setExcludedPaths(List<String> excludedPaths) {
         this.excludedPaths = excludedPaths;
+    }
+
+    public ScopePaths getScopePaths() {
+        return scopePaths;
+    }
+
+    public void setScopePaths(ScopePaths scopePaths) {
+        this.scopePaths = scopePaths;
     }
 
 }

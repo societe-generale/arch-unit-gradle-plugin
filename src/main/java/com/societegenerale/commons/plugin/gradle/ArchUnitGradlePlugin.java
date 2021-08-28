@@ -2,7 +2,6 @@ package com.societegenerale.commons.plugin.gradle;
 
 import org.gradle.api.*;
 
-
 public class ArchUnitGradlePlugin implements Plugin<Project> {
 
     public void apply(Project project) {

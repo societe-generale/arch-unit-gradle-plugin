@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 
 public class GradleLogAdapter implements Log {
 
-    private Logger logger;
+    private final Logger logger;
 
     public GradleLogAdapter(Logger logger){
         this.logger = logger;
@@ -18,7 +18,9 @@ public class GradleLogAdapter implements Log {
     }
 
     @Override
-    public boolean isDebugEnabled() { return logger.isDebugEnabled(); }
+    public boolean isDebugEnabled() {
+        return logger.isDebugEnabled();
+    }
 
     @Override
     public void info(String s) {
@@ -27,11 +29,21 @@ public class GradleLogAdapter implements Log {
 
     @Override
     public void debug(String s) {
-
+        logger.debug(s);
     }
 
     @Override
     public void warn(String toString) {
         logger.warn(toString);
+    }
+
+    @Override
+    public void warn(String s, Throwable t) {
+        logger.warn(s,t);
+    }
+
+    @Override
+    public void debug(String s, Throwable t) {
+        logger.debug(s,t);
     }
 }

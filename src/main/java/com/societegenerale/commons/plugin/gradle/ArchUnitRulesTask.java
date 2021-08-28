@@ -26,7 +26,7 @@ public class ArchUnitRulesTask extends DefaultTask {
     }
 
     @TaskAction
-    public void checkRules() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void checkRules() throws InstantiationException, IllegalAccessException, InvocationTargetException {
 
         if (archUnitGradleConfig.isSkip()) {
             logger.warn("Rule checking has been skipped!");
@@ -43,7 +43,8 @@ public class ArchUnitRulesTask extends DefaultTask {
 
         RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
                                                                         new GradleScopePathProvider(archUnitGradleConfig),
-                                                                        archUnitGradleConfig.getExcludedPaths());
+                                                                        archUnitGradleConfig.getExcludedPaths(),
+                                                                        archUnitGradleConfig.getBuildPath());
       
         ruleFailureMessage = ruleInvokerService.invokeRules(rules);
 
