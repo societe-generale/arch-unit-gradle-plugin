@@ -6,7 +6,7 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'signing'
+
 
 sourceCompatibility = 1.8
 
@@ -34,10 +34,6 @@ artifacts {
     archives jar
     archives sourceJar
     archives javadocJar
-}
-
-signing {
-    sign configurations.archives
 }
 
 
