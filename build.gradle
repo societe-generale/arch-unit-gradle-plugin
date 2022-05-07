@@ -7,6 +7,8 @@ plugins {
 
 apply plugin: 'java'
 
+//useful to publish SNAPSHOT versions locally during tests
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
 
