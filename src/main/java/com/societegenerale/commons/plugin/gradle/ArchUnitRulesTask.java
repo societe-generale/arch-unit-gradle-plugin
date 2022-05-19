@@ -2,8 +2,6 @@ package com.societegenerale.commons.plugin.gradle;
 
 import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.model.Rules;
-import com.societegenerale.commons.plugin.service.RuleInvokerService;
-import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.ConfigurableFileCollection;
@@ -27,22 +25,18 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
     public abstract ConfigurableFileCollection getClasspath();
 
     @Input
-    public abstract Property<List<String>> getPreConfiguredRules();
+    public abstract Property<ArchUnitGradleConfig> getArchUnitGradleConfig();
 
     @Inject
     protected abstract WorkerExecutor getWorkerExecutor();
-    @Inject
-    private ArchUnitGradleConfig archUnitGradleConfig;
+
 
     private Log logger = new GradleLogAdapter(LoggerFactory.getLogger(ArchUnitRulesTask.class));
 
-    /*
-    public ArchUnitRulesTask(ArchUnitGradleConfig archUnitGradleConfig) {
-         this.archUnitGradleConfig = archUnitGradleConfig;
-    }
-*/
     @TaskAction
     public void checkRules() throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
+        ArchUnitGradleConfig archUnitGradleConfig = getArchUnitGradleConfig().get();
 
         if (archUnitGradleConfig.isSkip()) {
             logger.warn("Rule checking has been skipped!");
@@ -55,27 +49,12 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
             throw new GradleException("Arch unit Gradle Plugin should have at least one preconfigured/configurable rule!");
         }
 
-
-        RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
-                                                                        new GradleScopePathProvider(archUnitGradleConfig),
-                                                                        archUnitGradleConfig.getExcludedPaths());
-
-        System.out.println("CLQSSPQTH content : "+getClasspath().getAsPath());
-
         WorkQueue queue = getWorkerExecutor().classLoaderIsolation(spec -> spec.getClasspath().from(getClasspath()));
         queue.submit(WorkerAction.class, params -> {
-                params.getRuleInvokerService().set(ruleInvokerService);
-                params.getRules().set(rules);
+                params.getArchUnitGradleConfig().set(archUnitGradleConfig);
+
         });
 
-/*
-        ruleFailureMessage = ruleInvokerService.invokeRules(rules);
-
-        if (!StringUtils.isEmpty(ruleFailureMessage)) {
-            throw new GradleException(PREFIX_ARCH_VIOLATION_MESSAGE + " \n" + ruleFailureMessage);
-        }
-
- */
     }
 
 }

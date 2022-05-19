@@ -22,7 +22,7 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
                     t.mustRunAfter(testTask);
 
                     t.getClasspath().from(conf);
-                    t.getPreConfiguredRules().convention(archUnitGradleConfig.getRules().getPreConfiguredRules());
+                    t.getArchUnitGradleConfig().convention(archUnitGradleConfig);
                 });
     }
 
