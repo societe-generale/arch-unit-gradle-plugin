@@ -1,25 +1,29 @@
 package com.societegenerale.commons.plugin.gradle;
 
 import org.gradle.api.*;
-
+import org.gradle.api.artifacts.Configuration;
 
 public class ArchUnitGradlePlugin implements Plugin<Project> {
 
     public void apply(Project project) {
 
-        ArchUnitGradleConfig archUnitGradleConfig = project.getExtensions().create("archUnit", ArchUnitGradleConfig.class, project);
-
-        Task archUnitTask=project.getTasks().create("checkRules", ArchUnitRulesTask.class, archUnitGradleConfig);
-
-        archUnitTask.setGroup("verification");
+        Configuration conf = project.getConfigurations().create("archUnitClasspath");
+        ArchUnitGradleConfig archUnitGradleConfig = project.getExtensions()
+                .create("archUnit", ArchUnitGradleConfig.class, project);
 
         final Task checkTask = findExistingTaskOrFailOtherwise("check",project);
 
         final Task testTask = findExistingTaskOrFailOtherwise("test",project);
 
-        checkTask.dependsOn(archUnitTask);
-        archUnitTask.mustRunAfter(testTask);
+        project.getTasks().register("checkRules", ArchUnitRulesTask.class,
+                t -> {
+                    t.setGroup("verification");
+                    checkTask.dependsOn(t);
+                    t.mustRunAfter(testTask);
 
+                    t.getClasspath().from(conf);
+                    t.getPreConfiguredRules().convention(archUnitGradleConfig.getRules().getPreConfiguredRules());
+                });
     }
 
     private Task findExistingTaskOrFailOtherwise(String taskName, Project project){
