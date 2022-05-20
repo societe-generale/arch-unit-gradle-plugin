@@ -25,8 +25,16 @@ public class ArchUnitGradleConfig {
         this.project = project;
     }
 
+    public List<String> getPreConfiguredRules() {
+        return preConfiguredRules;
+    }
+
     public void setPreConfiguredRules(List<String> preConfiguredRules) {
         this.preConfiguredRules = preConfiguredRules;
+    }
+
+    public List<ConfigurableRule> getConfigurableRules() {
+        return configurableRules;
     }
 
     public void setConfigurableRules(List<ConfigurableRule> configurableRules) {

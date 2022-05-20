@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ArchUnitRulesTask extends DefaultTask {
 
@@ -51,8 +51,24 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
 
         WorkQueue queue = getWorkerExecutor().classLoaderIsolation(spec -> spec.getClasspath().from(getClasspath()));
         queue.submit(WorkerAction.class, params -> {
-                params.getArchUnitGradleConfig().set(archUnitGradleConfig);
+            params.getMainClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/main");
+            params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/test");
+            params.getPreConfiguredRules().addAll(archUnitGradleConfig.getPreConfiguredRules());
+            params.getConfigurableRules().addAll(archUnitGradleConfig.getConfigurableRules().stream()
+                    .map(configurableRule -> {
+                        WorkerActionParams.ApplyOn applyOn = new WorkerActionParams.ApplyOn();
+                        applyOn.packageName = configurableRule.getApplyOn().getPackageName();
+                        applyOn.scope = configurableRule.getApplyOn().getScope();
 
+                        WorkerActionParams.ConfigurableRule ret = new WorkerActionParams.ConfigurableRule();
+                        ret.rule = configurableRule.getRule();
+                        ret.applyOn = applyOn;
+                        ret.checks.addAll(configurableRule.getChecks());
+                        ret.skip = configurableRule.isSkip();
+
+                        return ret;
+                    })
+                    .collect(Collectors.toList()));
         });
 
     }
