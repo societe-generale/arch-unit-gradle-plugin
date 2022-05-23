@@ -5,21 +5,21 @@ import com.societegenerale.commons.plugin.service.ScopePathProvider;
 
 public class GradleScopePathProvider implements ScopePathProvider {
 
-    private ArchUnitGradleConfig archUnitGradleConfig;
+    private final RootClassFolder mainClassesPath;
+    private final RootClassFolder testClassesPath;
 
-    public GradleScopePathProvider(ArchUnitGradleConfig archUnitGradleConfig) {
-        this.archUnitGradleConfig=archUnitGradleConfig;
+    public GradleScopePathProvider(String mainPath, String testPath) {
+        mainClassesPath = new RootClassFolder(mainPath);
+        testClassesPath = new RootClassFolder(testPath);
     }
 
     @Override
     public RootClassFolder getMainClassesPath() {
-        return new RootClassFolder(
-                archUnitGradleConfig.getBuildPath() +"/classes/java/main");
+        return mainClassesPath;
     }
 
     @Override
     public RootClassFolder getTestClassesPath() {
-        return new RootClassFolder(
-                archUnitGradleConfig.getBuildPath() +"/classes/java/test");
+        return testClassesPath;
     }
 }

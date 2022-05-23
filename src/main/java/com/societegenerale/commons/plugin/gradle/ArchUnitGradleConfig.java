@@ -41,6 +41,14 @@ public class ArchUnitGradleConfig {
         return new ApplyOn(packageName,scope);
     }
 
+    public List<String> getPreConfiguredRules() {
+        return preConfiguredRules;
+    }
+
+    public List<ConfigurableRule> getConfigurableRules() {
+        return configurableRules;
+    }
+
     public List<String> check(String... checks){ return Arrays.asList(checks); }
 
     public Rules getRules() {
