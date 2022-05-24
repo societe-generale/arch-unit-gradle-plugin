@@ -25,20 +25,6 @@ public abstract class WorkerAction implements WorkAction<WorkerActionParams> {
 
         Collection<String> excludedPaths = params.getExcludedPaths().get();
 
-        System.out.println("list of excludedPaths : "+excludedPaths);
-
-        Class ctClass = RuleInvokerService.class;
-
-        Constructor[] constructors = ctClass.getConstructors();
-        for (int i = 0; i < constructors.length; i++) {
-            System.out.println("constuctor: " + constructors[i]);
-        }
-
-        Constructor[] declaredConstructors = ctClass.getDeclaredConstructors();
-        for (int i = 0; i < declaredConstructors.length; i++) {
-            System.out.println("declared constructor: " + declaredConstructors[i]);
-        }
-
         RuleInvokerService ruleInvokerService = new RuleInvokerService(
                 new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
                 new GradleScopePathProvider(params.getMainClassesPath().get(), params.getTestClassesPath().get()),
