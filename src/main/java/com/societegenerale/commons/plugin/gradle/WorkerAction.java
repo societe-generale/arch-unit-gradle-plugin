@@ -1,13 +1,8 @@
 package com.societegenerale.commons.plugin.gradle;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import com.societegenerale.commons.plugin.model.ApplyOn;
-import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
@@ -26,22 +21,16 @@ public abstract class WorkerAction implements WorkAction<WorkerActionParams> {
         Collection<String> excludedPaths = params.getExcludedPaths().get();
 
         RuleInvokerService ruleInvokerService = new RuleInvokerService(
-                new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
-                new GradleScopePathProvider(params.getMainClassesPath().get(), params.getTestClassesPath().get()),
-                excludedPaths);
+            new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
+            new GradleScopePathProvider(params.getMainClassesPath().get(), params.getTestClassesPath().get()),
+            excludedPaths,
+            params.getProjectBuildDirPath().get());
 
         String ruleFailureMessage = "";
 
         try {
-            List<ConfigurableRule> configurableRules = params.getConfigurableRules().map(crules -> crules.stream()
-                            .map(crule -> new ConfigurableRule(
-                                    crule.rule,
-                                    new ApplyOn(crule.applyOn.packageName, crule.applyOn.scope),
-                                    crule.checks,
-                                    crule.skip))
-                            .collect(Collectors.toList()))
-                    .get();
-            Rules rules = new Rules(params.getPreConfiguredRules().get(), configurableRules);
+
+            Rules rules = new Rules(params.getPreConfiguredRules().get(), params.getConfigurableRules().get());
             ruleFailureMessage = ruleInvokerService.invokeRules(rules);
 
             if (!StringUtils.isEmpty(ruleFailureMessage)) {
