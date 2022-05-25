@@ -27,11 +27,21 @@ public class GradleLogAdapter implements Log {
 
     @Override
     public void debug(String s) {
-
+        logger.debug(s);
     }
 
     @Override
     public void warn(String toString) {
         logger.warn(toString);
+    }
+
+    @Override
+    public void warn(String s, Throwable throwable) {
+        logger.warn(s,throwable);
+    }
+
+    @Override
+    public void debug(String s, Throwable throwable) {
+        logger.debug(s,throwable);
     }
 }

@@ -9,8 +9,9 @@ public class ArchUnitGradlePlugin implements Plugin<Project> {
 
         ArchUnitGradleConfig archUnitGradleConfig = project.getExtensions().create("archUnit", ArchUnitGradleConfig.class, project);
 
-        Task archUnitTask=project.getTasks().create("checkRules", ArchUnitRulesTask.class, archUnitGradleConfig);
+        ArchUnitRulesTask archUnitTask=project.getTasks().create("checkRules", ArchUnitRulesTask.class, archUnitGradleConfig);
 
+        archUnitTask.setProjectBuildDir(project.getBuildDir());
         archUnitTask.setGroup("verification");
 
         final Task checkTask = findExistingTaskOrFailOtherwise("check",project);
