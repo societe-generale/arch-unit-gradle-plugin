@@ -1,6 +1,7 @@
 package com.societegenerale.commons.plugin.gradle;
 
-import com.societegenerale.commons.plugin.model.ConfigurableRule;
+import java.io.Serializable;
+import java.util.ArrayList;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.workers.WorkParameters;
@@ -16,6 +17,20 @@ public interface WorkerActionParams extends WorkParameters {
 
     ListProperty<String> getPreConfiguredRules();
 
-    ListProperty<ConfigurableRule> getConfigurableRules();
+    ListProperty<WorkerActionParams.ConfigurableRule> getConfigurableRules();
+
+    class ConfigurableRule implements Serializable {
+        static final long serialVersionUID = 1L;
+        String rule;
+        ApplyOn applyOn;
+        ArrayList<String> checks = new ArrayList<>();
+        boolean skip;
+    }
+
+    class ApplyOn implements Serializable {
+        static final long serialVersionUID = 1L;
+        String packageName;
+        String scope;
+    }
 
 }

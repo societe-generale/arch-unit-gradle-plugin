@@ -2,6 +2,7 @@ package com.societegenerale.commons.plugin.gradle;
 
 import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.model.Rules;
+import java.util.stream.Collectors;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.ConfigurableFileCollection;
@@ -54,7 +55,22 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
             params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/test");
             params.getProjectBuildDirPath().set(archUnitGradleConfig.getBuildPath());
             params.getPreConfiguredRules().addAll(archUnitGradleConfig.getPreConfiguredRules());
-            params.getConfigurableRules().addAll(archUnitGradleConfig.getConfigurableRules());
+
+            params.getConfigurableRules().addAll(archUnitGradleConfig.getConfigurableRules().stream()
+                .map(configurableRule -> {
+                    WorkerActionParams.ApplyOn applyOn = new WorkerActionParams.ApplyOn();
+                    applyOn.packageName = configurableRule.getApplyOn().getPackageName();
+                    applyOn.scope = configurableRule.getApplyOn().getScope();
+
+                    WorkerActionParams.ConfigurableRule ret = new WorkerActionParams.ConfigurableRule();
+                    ret.rule = configurableRule.getRule();
+                    ret.applyOn = applyOn;
+                    ret.checks.addAll(configurableRule.getChecks());
+                    ret.skip = configurableRule.isSkip();
+
+                    return ret;
+                })
+                .collect(Collectors.toList()));
         });
 
     }

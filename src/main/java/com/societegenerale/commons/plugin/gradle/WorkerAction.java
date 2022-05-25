@@ -1,10 +1,14 @@
 package com.societegenerale.commons.plugin.gradle;
 
+import com.societegenerale.commons.plugin.model.ApplyOn;
+import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.GradleException;
 import org.gradle.workers.WorkAction;
@@ -30,7 +34,16 @@ public abstract class WorkerAction implements WorkAction<WorkerActionParams> {
 
         try {
 
-            Rules rules = new Rules(params.getPreConfiguredRules().get(), params.getConfigurableRules().get());
+            List<ConfigurableRule> configurableRules = params.getConfigurableRules().map(crules -> crules.stream()
+                    .map(crule -> new ConfigurableRule(
+                        crule.rule,
+                        new ApplyOn(crule.applyOn.packageName, crule.applyOn.scope),
+                        crule.checks,
+                        crule.skip))
+                    .collect(Collectors.toList()))
+                .get();
+            Rules rules = new Rules(params.getPreConfiguredRules().get(), configurableRules);
+
             ruleFailureMessage = ruleInvokerService.invokeRules(rules);
 
             if (!StringUtils.isEmpty(ruleFailureMessage)) {
