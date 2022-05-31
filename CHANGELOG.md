@@ -12,6 +12,15 @@
 
 ### Fixed
 
+## [2.9.5] - 2022-05-31
+
+### Changed
+- upgraded to arch-unit-build-plugin-core 2.9.5
+- replaced TravisCI by GitHub actions
+
+### Fixed
+- PR 24 - can add a packaged jar with custom rules - big thanks to @oesolutions for his help !!
+
 ## [2.7.3] - 2021-03-31
 
 ### Changed
