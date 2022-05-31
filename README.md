@@ -72,7 +72,20 @@ To use the plugin, your `build.gradle` require these changes:
 ### Adding new rules
 
 All rules referenced in the configuration have to be available in the classpath. Therefore, you have 2 solutions : 
-- package your rule into a custom jar, add a dependency to this jar (probably with `test` scope) and declare the rule in the config
+- package your rule into a custom jar, add a dependency to this jar with the dedicated  configuration : 
+
+```
+dependencies {
+    ...
+    archUnitExtraLib('org.example:archunit-custom-rules:1.0.0')
+    ...
+}
+```
+
+**caveat** : when packaging your custom rules, if you're using `arch-unit-build-plugin-core`, make sure it's the same version that is used in this plugin. If it's not the same version and there are breaking changes, it may not work : the plugin may take some classes from "your" jar instead of its own jar, and it may fail if some classes are missing or if some method signatures have changed   
+
+
+
 - Propose your rule through a PullRequest to [Arch-Unit-Build-Plugin-Core](https://github.com/societe-generale/arch-unit-build-plugin-core) : if it's accepted, it will be part of the next release and usable by everyone. 
 
 ### Releasing a new version of the plugin

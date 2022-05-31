@@ -2,35 +2,41 @@ package com.societegenerale.commons.plugin.gradle;
 
 import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.model.Rules;
-import com.societegenerale.commons.plugin.service.RuleInvokerService;
-import java.io.File;
-import java.io.IOException;
-import org.apache.commons.lang3.StringUtils;
+import java.util.stream.Collectors;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
+import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.Classpath;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.workers.WorkQueue;
+import org.gradle.workers.WorkerExecutor;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
 
-public class ArchUnitRulesTask extends DefaultTask {
+public abstract class ArchUnitRulesTask extends DefaultTask {
 
-    private ArchUnitGradleConfig archUnitGradleConfig;
+    @InputFiles
+    @Classpath
+    public abstract ConfigurableFileCollection getClasspath();
 
-    private File projectBuildDir;
-
-    private Log logger = new GradleLogAdapter(LoggerFactory.getLogger(ArchUnitRulesTask.class));
-
-    private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Gradle plugin reported architecture failures listed below :";
+    @Input
+    public abstract Property<ArchUnitGradleConfig> getArchUnitGradleConfig();
 
     @Inject
-    public ArchUnitRulesTask(ArchUnitGradleConfig archUnitGradleConfig) {
-         this.archUnitGradleConfig = archUnitGradleConfig;
-    }
+    protected abstract WorkerExecutor getWorkerExecutor();
+
+
+    private final Log logger = new GradleLogAdapter(LoggerFactory.getLogger(ArchUnitRulesTask.class));
 
     @TaskAction
-    public void checkRules() throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void checkRules() {
+
+        ArchUnitGradleConfig archUnitGradleConfig = getArchUnitGradleConfig().get();
 
         if (archUnitGradleConfig.isSkip()) {
             logger.warn("Rule checking has been skipped!");
@@ -43,28 +49,30 @@ public class ArchUnitRulesTask extends DefaultTask {
             throw new GradleException("Arch unit Gradle Plugin should have at least one preconfigured/configurable rule!");
         }
 
-        String ruleFailureMessage = "";
+        WorkQueue queue = getWorkerExecutor().classLoaderIsolation(spec -> spec.getClasspath().from(getClasspath()));
+        queue.submit(WorkerAction.class, params -> {
+            params.getMainClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/main");
+            params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/test");
+            params.getProjectBuildDirPath().set(archUnitGradleConfig.getBuildPath());
+            params.getPreConfiguredRules().addAll(archUnitGradleConfig.getPreConfiguredRules());
 
-        try {
+            params.getConfigurableRules().addAll(archUnitGradleConfig.getConfigurableRules().stream()
+                .map(configurableRule -> {
+                    WorkerActionParams.ApplyOn applyOn = new WorkerActionParams.ApplyOn();
+                    applyOn.packageName = configurableRule.getApplyOn().getPackageName();
+                    applyOn.scope = configurableRule.getApplyOn().getScope();
 
-            RuleInvokerService ruleInvokerService = new RuleInvokerService(new GradleLogAdapter(LoggerFactory.getLogger(RuleInvokerService.class)),
-                                                                            new GradleScopePathProvider(archUnitGradleConfig),
-                                                                            archUnitGradleConfig.getExcludedPaths(),
-                                                                            projectBuildDir.getCanonicalPath());
+                    WorkerActionParams.ConfigurableRule ret = new WorkerActionParams.ConfigurableRule();
+                    ret.rule = configurableRule.getRule();
+                    ret.applyOn = applyOn;
+                    ret.checks.addAll(configurableRule.getChecks());
+                    ret.skip = configurableRule.isSkip();
 
-            ruleFailureMessage = ruleInvokerService.invokeRules(rules);
-        } catch (IOException e) {
-            throw new RuntimeException("problem with the build directory",e);
-        }
+                    return ret;
+                })
+                .collect(Collectors.toList()));
+        });
 
-        if (!StringUtils.isEmpty(ruleFailureMessage)) {
-            throw new GradleException(PREFIX_ARCH_VIOLATION_MESSAGE + " \n" + ruleFailureMessage);
-        }
     }
-
-    public void setProjectBuildDir(File projectBuildDir) {
-        this.projectBuildDir = projectBuildDir;
-    }
-
 
 }
