@@ -55,6 +55,7 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
             params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/test");
             params.getProjectBuildDirPath().set(archUnitGradleConfig.getBuildPath());
             params.getPreConfiguredRules().addAll(archUnitGradleConfig.getPreConfiguredRules());
+            params.getExcludedPaths().addAll(archUnitGradleConfig.getExcludedPaths());
 
             params.getConfigurableRules().addAll(archUnitGradleConfig.getConfigurableRules().stream()
                 .map(configurableRule -> {
