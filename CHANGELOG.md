@@ -12,6 +12,15 @@
 
 ### Fixed
 
+## [2.9.6] - 2022-08-02
+
+### Changed
+- upgraded to arch-unit-build-plugin-core 2.9.6
+
+### Fixed
+- Issue 30 - excluded paths are passed to arch-unit core - it was probably missed during the rework in 2.9.5
+
+
 ## [2.9.5] - 2022-05-31
 
 ### Changed
