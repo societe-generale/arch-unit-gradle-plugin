@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenLocal()
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
-    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:2.9.6'
+    implementation 'com.societegenerale.commons:arch-unit-build-plugin-core:3.0.0'
 }
 
 task sourceJar(type: Jar) {
@@ -25,6 +25,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier "javadoc"
     from javadoc.destinationDir
 }
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
 artifacts {
     archives jar
