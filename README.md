@@ -46,6 +46,12 @@ To use the plugin, your `build.gradle` require these changes:
     
         archUnit{
         
+                # defaults to "/classes/java/main" / "/classes/java/test"
+                # you probably don't need to set anything if you have a standard java project
+                # for a kotlin project, you would need this :
+                mainScopePath="/classes/kotlin/main"
+                testScopePath="/classes/kotlin/test"
+        
                  excludedPaths=["some/package"]
 
                   preConfiguredRules=["com.societegenerale.commons.plugin.rules.NoInjectedFieldTest",
