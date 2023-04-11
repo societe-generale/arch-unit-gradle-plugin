@@ -51,8 +51,8 @@ public abstract class ArchUnitRulesTask extends DefaultTask {
 
         WorkQueue queue = getWorkerExecutor().classLoaderIsolation(spec -> spec.getClasspath().from(getClasspath()));
         queue.submit(WorkerAction.class, params -> {
-            params.getMainClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/main");
-            params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + "/classes/java/test");
+            params.getMainClassesPath().set(archUnitGradleConfig.getBuildPath() + archUnitGradleConfig.getMainScopePath());
+            params.getTestClassesPath().set(archUnitGradleConfig.getBuildPath() + archUnitGradleConfig.getTestScopePath());
             params.getProjectBuildDirPath().set(archUnitGradleConfig.getBuildPath());
             params.getPreConfiguredRules().addAll(archUnitGradleConfig.getPreConfiguredRules());
             params.getExcludedPaths().addAll(archUnitGradleConfig.getExcludedPaths());

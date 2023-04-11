@@ -19,6 +19,10 @@ public class ArchUnitGradleConfig {
 
     private Project project;
 
+    private String mainScopePath="/classes/java/main";
+
+    private String testScopePath="/classes/java/test";
+
     private boolean skip = false;
 
     public ArchUnitGradleConfig(Project project) {
@@ -76,6 +80,22 @@ public class ArchUnitGradleConfig {
 
     public void setExcludedPaths(List<String> excludedPaths) {
         this.excludedPaths = excludedPaths;
+    }
+
+    public String getMainScopePath() {
+        return mainScopePath;
+    }
+
+    public void setMainScopePath(String mainScopePath) {
+        this.mainScopePath = mainScopePath;
+    }
+
+    public String getTestScopePath() {
+        return testScopePath;
+    }
+
+    public void setTestScopePath(String testScopePath) {
+        this.testScopePath = testScopePath;
     }
 
 }
