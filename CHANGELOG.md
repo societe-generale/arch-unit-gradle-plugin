@@ -12,6 +12,14 @@
 
 ### Fixed
 
+## [3.0.0] - 2023-04-11
+
+### Added
+- PR 32 : possibility to override main and test scopes
+
+### Changed
+- upgraded to arch-unit-build-plugin-core 3.0.0
+
 ## [2.9.6] - 2022-08-02
 
 ### Changed
