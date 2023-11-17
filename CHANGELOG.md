@@ -12,6 +12,11 @@
 
 ### Fixed
 
+## [4.0.0] - 2023-11-17
+
+### Changed
+- upgraded to arch-unit-build-plugin-core 4.0.0 and JDK 21
+
 ## [3.0.0] - 2023-04-11
 
 ### Added
