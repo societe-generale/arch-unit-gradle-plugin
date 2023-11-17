@@ -4,8 +4,6 @@ plugins {
     id 'maven-publish'
 }
 
-sourceCompatibility = 11
-
 repositories {
     mavenLocal()
     mavenCentral()
