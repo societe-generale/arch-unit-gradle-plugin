@@ -12,6 +12,12 @@
 
 ### Fixed
 
+## [3.1.0] - 2023-11-19
+
+### Added
+- using arch-unit-build-plugin-core 3.1.0, to benefit from https://github.com/societe-generale/arch-unit-build-plugin-core/pull/75
+
+
 ## [3.0.0] - 2023-04-11
 
 ### Added
